@@ -1,5 +1,5 @@
 const timeTogetherButton = document.getElementById("timeTogether");
-const firstMeetingButton = document.getElementById("firstMeeting"); // Novo botão
+const firstMeetingButton = document.getElementById("firstMeeting");
 const backButton = document.getElementById("backButton");
 const displayArea = document.getElementById("displayArea");
 const mainButtons = document.getElementById("mainButtons");
@@ -30,21 +30,24 @@ function updateTime(startTime) {
   setTimeout(() => updateTime(startTime), 1000);
 }
 
-// Botão "Tempo Juntos"
-timeTogetherButton.addEventListener("click", () => {
-  const startTime = new Date("2024-09-21T17:49:00");
+// Função para mostrar a área de exibição e limpar conteúdo antigo
+function showDisplayArea() {
   mainButtons.classList.add("hidden");
   displayArea.classList.remove("hidden");
   content.innerHTML = ""; // Limpa qualquer conteúdo anterior
+}
+
+// Botão "Tempo Juntos"
+timeTogetherButton.addEventListener("click", () => {
+  const startTime = new Date("2024-09-21T17:49:00");
+  showDisplayArea();
   updateTime(startTime);
 });
 
 // Botão "Primeiro Encontro"
 firstMeetingButton.addEventListener("click", () => {
   const firstMeetingTime = new Date("2024-01-23T15:47:00");
-  mainButtons.classList.add("hidden");
-  displayArea.classList.remove("hidden");
-  content.innerHTML = ""; // Limpa qualquer conteúdo anterior
+  showDisplayArea();
   updateTime(firstMeetingTime);
 });
 
