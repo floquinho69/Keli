@@ -1,11 +1,14 @@
 const timeTogetherButton = document.getElementById("timeTogether");
 const firstMeetingButton = document.getElementById("firstMeeting");
-const backButton = document.getElementById("backButton");
+const resetButton = document.getElementById("resetButton");
 const displayArea = document.getElementById("displayArea");
 const mainButtons = document.getElementById("mainButtons");
 const content = document.getElementById("content");
 
-// Função para atualizar o tempo (pode ser usada para ambos os botões)
+// Variável para armazenar o id do setTimeout e parar a execução anterior
+let timeoutId;
+
+// Função para atualizar o tempo
 function updateTime(startTime) {
   const now = new Date();
   const diff = now - startTime;
@@ -27,33 +30,42 @@ function updateTime(startTime) {
   `;
 
   // Atualiza o tempo a cada segundo
-  setTimeout(() => updateTime(startTime), 1000);
+  timeoutId = setTimeout(() => updateTime(startTime), 1000);
 }
 
 // Função para mostrar a área de exibição e limpar conteúdo antigo
 function showDisplayArea() {
+  // Limpa qualquer conteúdo antigo
+  content.innerHTML = "";
   mainButtons.classList.add("hidden");
   displayArea.classList.remove("hidden");
-  content.innerHTML = ""; // Limpa qualquer conteúdo anterior
+}
+
+// Função para parar o timeout anterior e resetar a área
+function resetDisplayArea() {
+  clearTimeout(timeoutId); // Interrompe qualquer execução de timeout anterior
+  content.innerHTML = ""; // Limpa o conteúdo exibido
+  mainButtons.classList.remove("hidden");
+  displayArea.classList.add("hidden");
 }
 
 // Botão "Tempo Juntos"
 timeTogetherButton.addEventListener("click", () => {
   const startTime = new Date("2024-09-21T17:49:00");
-  showDisplayArea();
-  updateTime(startTime);
+  resetDisplayArea(); // Limpa e garante que não há outro tempo sendo exibido
+  showDisplayArea(); // Exibe a nova tela
+  updateTime(startTime); // Exibe o tempo calculado
 });
 
 // Botão "Primeiro Encontro"
 firstMeetingButton.addEventListener("click", () => {
   const firstMeetingTime = new Date("2024-01-23T15:47:00");
-  showDisplayArea();
-  updateTime(firstMeetingTime);
+  resetDisplayArea(); // Limpa e garante que não há outro tempo sendo exibido
+  showDisplayArea(); // Exibe a nova tela
+  updateTime(firstMeetingTime); // Exibe o tempo calculado
 });
 
-// Botão "Voltar"
-backButton.addEventListener("click", () => {
-  mainButtons.classList.remove("hidden");
-  displayArea.classList.add("hidden");
-  content.innerHTML = ""; // Limpa o conteúdo exibido
+// Botão "Resetar"
+resetButton.addEventListener("click", () => {
+  resetDisplayArea(); // Limpa o conteúdo e retorna à tela inicial
 });
